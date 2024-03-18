@@ -1,0 +1,22 @@
+#self-view-video, #self-view-canvas {
+    width: 100%;
+    height: auto;
+  }
+
+.meeting-participants {
+  position: relative;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  background: black;
+  color: white;
+  width: 960px;
+  height: 540px;
+
+  .participant-audio-status {
+    position: absolute;
+    bottom: 0;
+    left: 15px;
+  }
+}

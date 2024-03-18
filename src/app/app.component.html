@@ -1,0 +1,54 @@
+<!-- Join Meeting -->
+<button (click)="startMeeting(createMeeting)">Join Meeting</button>
+<!-- Self View -->
+<video id="self-view-video" width="960" height="540"></video>
+<!-- <canvas id="self-view-canvas" width="1920" height="1080"></canvas> -->
+
+<div class="container meeting-control-layer">
+  <!-- "fas" and "fa" are icon prefixes for the font-awesome library -->
+  <button
+    (click)="zoomState.joinAudio ? toggleAudioState() : joinAudio()"
+    id="js-mic-button"
+    class="meeting-control-button"
+  >
+    <i *ngIf="!zoomState.joinAudio; else mic" id="js-mic-icon" class="fas fa-headphones"></i>
+    <ng-template #mic>
+      <i id="js-mic-icon" class="fas {{zoomState.audio === 'mute' ? 'fa-microphone-slash': 'fa-microphone'}}"></i>
+    </ng-template>
+  </button>
+  <button
+    (click)="zoomState.video === 'stop' ? startVideo(): stopVideo()"
+    id="js-webcam-button"
+    class="meeting-control-button"
+  >
+    <i id="js-webcam-icon" class="fas {{zoomState.video === 'start' ? 'fa-video': 'fa-video-slash'}} webcam__off"></i>
+  </button>
+  <div class="vertical-divider"></div>
+  <button
+    (click)="endMeeting()"
+    id="js-leave-button"
+    class="meeting-control-button meeting-control-button__leave-session"
+  >
+    <i id="js-leave-session-icon" class="fas fa-phone"></i>
+  </button>
+</div>
+
+<div style="position: relative;">
+  <!-- Participant View -->
+  <canvas style="position: absolute;" id="participants-canvas" width="1920" height="1080"></canvas>
+  
+  <!-- Rendering all participants including host via zoomState.participants -->
+  <div style="position: absolute;" [ngStyle]="{top: positionCoordinates[i].x + 'px', left: positionCoordinates[i].y + 'px', zIndex: user.bVideoOn ? -1 : 'unset'}" *ngFor="let user of zoomState.participants; let i = index" class="meeting-participants">
+    <p>{{ user.displayName }}</p>
+    <div class="participant-audio-status">
+      <span *ngIf="user.audio === '';else userMuted">
+        Joining with audio...
+      </span>
+      <ng-template #userMuted>
+        <span
+          class="fas {{ user.muted ? 'fa-microphone-slash' : 'fa-microphone' }}"
+        ></span>
+      </ng-template>
+    </div>
+  </div>
+</div>
